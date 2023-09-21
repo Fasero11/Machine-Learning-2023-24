@@ -36,7 +36,7 @@ if __name__ == '__main__':
     ax = plt.axes(projection='3d')
 
     # Mostrar datos iniciales
-    ax.plot3D(x1, x2, Y) 
+    ax.scatter3D(x1, x2, Y) 
     # Mostrar predicción
     ax.plot3D(x1, x2, Ye, 'red') 
 
