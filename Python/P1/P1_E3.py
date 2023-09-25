@@ -1,6 +1,6 @@
 # Aprendizaje Automático 2023 - 2024
 
-# Práctica 1 - Ejercicio 1
+# Práctica 1 - Ejercicio 3
 
 # Julia López Augusto
 # Gonalo Vega Pérez
