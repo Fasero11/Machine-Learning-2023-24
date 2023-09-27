@@ -27,6 +27,13 @@ if __name__ == '__main__':
     # Crear Modelo y entrenarlo
     mdl = LogisticRegression(penalty="none").fit(X,Y)
 
+    # Resultados (Pesos)
+    coef = mdl.coef_
+    intercept = mdl.intercept_
+
+    print("Coef:" + str(coef))
+    print("Intercept:" + str(intercept))
+
     # Utilizar modelo entrenado para predecir resultados
     Ye = mdl.predict(X)
     Ye_proba = mdl.predict_proba(X)
