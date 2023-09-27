@@ -17,7 +17,6 @@ if __name__ == '__main__':
     X = np.column_stack((x1, x2))
     Y = np.array([1.56, 1.95, 2.44, 3.05, 3.81, 4.77, 5.96, 7.45, 9.31, 11.64])
 
-
     # Crear Modelo y entrenarlo
     mdl = LinearRegression().fit(X,Y)
 
