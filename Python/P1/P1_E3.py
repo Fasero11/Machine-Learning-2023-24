@@ -8,6 +8,7 @@
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
 
 if __name__ == '__main__':
 
@@ -25,7 +26,7 @@ if __name__ == '__main__':
 
 
     # Crear Modelo y entrenarlo
-    mdl = LogisticRegression(penalty="none").fit(X,Y)
+    mdl = LogisticRegression(penalty=None).fit(X,Y)
 
     # Resultados (Pesos)
     coef = mdl.coef_
@@ -36,7 +37,13 @@ if __name__ == '__main__':
 
     # Utilizar modelo entrenado para predecir resultados
     Ye = mdl.predict(X)
-    Ye_proba = mdl.predict_proba(X)
+    #Ye_proba = mdl.predict_proba(X)
+
+
+    # Calcular el error en porcentaje
+    error_percentage = 100 * (1 - accuracy_score(Y, Ye))
+    print("Error en porcentaje sobre los datos de entrenamiento:", error_percentage, "%")
+
 
     # Representar graficamente
     fig = plt.figure
@@ -46,7 +53,7 @@ if __name__ == '__main__':
     for data in X:
         # Si el dato es una cruz
         if Y[data_num] == 1:
-            print("plot cross " + str(data_num))
+            #print("plot cross " + str(data_num))
             # Si la predicción es cruz (acierto): pintar la cruz azul
             if Ye[data_num] == 1:
                 ax.scatter3D(X[data_num][0], X[data_num][1], X[data_num][2], marker="X", color="blue")
@@ -55,7 +62,7 @@ if __name__ == '__main__':
                 ax.scatter3D(X[data_num][0], X[data_num][1], X[data_num][2], marker="X", color="red") 
         # Si el dato es un círculo
         else:
-            print("plot circle " + str(data_num))
+            #print("plot circle " + str(data_num))
             # Si la predicción es círculo (acierto): pintar el círculo azul
             if Ye[data_num] == 0:
                 ax.scatter3D(X[data_num][0], X[data_num][1], X[data_num][2], color="blue")
