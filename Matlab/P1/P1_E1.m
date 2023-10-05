@@ -33,7 +33,21 @@ hold off
 
 % --- 1.4 ---
 % Obtener función de coste (J)
-w0 = 0.24
-w1 = 0.23
-w2 = 0
-J = 0
+syms w1 w2;
+w0 = 0.24;
+%w1 = 0.23;
+%w2 = 0;
+W = [w1,w2];
+n = 10;  % número de muestras
+total = 0;
+for c = 1:2
+    for i = 1:n
+        h = w0 + W(c)*X(i, c);
+        total = total + (h - Y(i))^2;
+    end
+end
+
+% Función de coste
+J = (1/(2*n)) * total;
+
+fmesh(J)
