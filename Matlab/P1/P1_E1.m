@@ -20,7 +20,7 @@ mdl = fitlm(X,Y)
 
 % --- 1.2 ---
 % Calcular predicciones
-ye = feval(mdl, X);
+ye = predict(mdl, X);
 
 % Mostrar datos iniciales
 scatter3(x1, x2 ,Y, 'b*');
@@ -32,3 +32,8 @@ hold off
 %% 
 
 % --- 1.4 ---
+% Obtener función de coste (J)
+w0 = 0.24
+w1 = 0.23
+w2 = 0
+J = 0
