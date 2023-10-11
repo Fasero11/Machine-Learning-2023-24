@@ -37,7 +37,6 @@ if __name__ == '__main__':
 
     # Utilizar modelo entrenado para predecir resultados
     Ye = mdl.predict(X)
-    #Ye_proba = mdl.predict_proba(X)
 
 
     # Calcular el error en porcentaje

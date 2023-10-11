@@ -10,7 +10,7 @@ x1 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 x2 = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 X = np.column_stack((x1, x2))
 Y = np.array([1.56, 1.95, 2.44, 3.05, 3.81, 4.77, 5.96, 7.45, 9.31, 11.64])
-# w0 = -0.705, y w1 = 1.072
+# w0 = -0.705, w1 = 1.072 y w2 = 0
 #W = np.array([-0.705, 1.072])
 
 # Para poder representarlo en 3D hay que dar un rango para expresar w0 y w1
