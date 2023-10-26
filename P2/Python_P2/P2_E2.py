@@ -9,15 +9,17 @@ import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
+import os
 
 if __name__ == '__main__':
 
-    data_train = pd.read_csv("/home/alumnos/gvega/Escritorio/AA/Machine-Learning-2023-24/P2/Data_P2/data.csv")  
+    current_dir = os.getcwd()
+    train_data = pd.read_csv(str(current_dir) + "/P2/Data_P2/data.csv")  
 
-    x1 = data_train['X1']
-    x2 = data_train['X2']
-    x3 = data_train['X3']
-    Y = data_train['Y']
+    x1 = train_data['X1']
+    x2 = train_data['X2']
+    x3 = train_data['X3']
+    Y = train_data['Y']
 
     X = np.column_stack((x1, x2, x3))
 
