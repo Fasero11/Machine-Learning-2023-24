@@ -11,11 +11,13 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import plot_tree
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
+import random
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
 
 
 if __name__ == '__main__':
 
-  # 1.1. Creación del modelo de árbol de decisión
   data = {
     'PREVISIÓN': ['NUBLADO', 'LLUVIOSO', 'NUBLADO', 'LLUVIOSO', 'SOLEADO', 'LLUVIOSO', 'SOLEADO', 'SOLEADO', 'NUBLADO', 'SOLEADO'],
     'TEMPERATURA': ['MEDIA', 'ALTA', 'BAJA', 'MEDIA', 'ALTA', 'BAJA', 'BAJA', 'ALTA', 'BAJA', 'MEDIA'],
@@ -30,26 +32,22 @@ if __name__ == '__main__':
   # Transformar variables categóricas a numéricas: One hot encoding 
   data_train_encoded = pd.get_dummies(data_train, columns=['PREVISIÓN', 'TEMPERATURA', 'MAREA', 'VIENTO', 'PESCAR'])
 
-  #print(data_train_encoded)
-  # Definir las características (X) y la variable objetivo (y)
-  #X = data_train_encoded.drop('PESCAR', axis=1)
-  #y = data_train_encoded['PESCAR']
-
+  # Establecer una semilla para la aleatoriedad en scikit-learn
+  random.seed(42)
+  np.random.seed(42)
   # Crear el modelo de árbol de decisión
   md1 = DecisionTreeClassifier().fit(data_train_encoded[['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
                                                            'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
                                                            'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
                                                            'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO']], data_train_encoded['PESCAR_SI'])
 
-  #print(model)
-  # Ajustar el modelo a los datos
-  #model.fit(X, y)
-
 
   # a) Para ver qué característica se ha seleccionado como nodo raíz y su importancia, puedes utilizar:
-
   root_feature = data_train_encoded.columns[md1.tree_.feature[0]]
   print(f"La característica seleccionada como nodo raíz es:" + root_feature)
+
+
+  # Obtener las importancias de las características
 
   #root_feature = X.columns[model.tree_.feature[0]]
   #print(f"La característica seleccionada como nodo raíz es: " + root_feature)
