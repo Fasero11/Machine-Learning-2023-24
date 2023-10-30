@@ -46,16 +46,16 @@ if __name__ == '__main__':
   root_feature = data_train_encoded.columns[md1.tree_.feature[0]]
   print(f"La característica seleccionada como nodo raíz es:" + root_feature)
 
-
-  # Obtener las importancias de las características
-
-  #root_feature = X.columns[model.tree_.feature[0]]
-  #print(f"La característica seleccionada como nodo raíz es: " + root_feature)
+  #  demostrador del apartado a)
+  # Obtener la importancia de las características
+  importance = md1.feature_importances_
+  X = data_train_encoded.drop(columns=['PESCAR_SI'])
+  # Obtener las características utilizadas como nodos en el árbol
+  feature_names = list(X.columns)
+  # Imprimir la importancia de las características
+  for feature, imp in zip(feature_names, importance):
+    print(f'{feature}: {imp}')
   
-  #rint("Características y sus importancias:")
-  #feature_importances = dict(zip(X.columns, model.feature_importances_))
-  #print(feature_importances)
-
   # b) Para verificar si existe algún valor de alguna característica que permita pescar independientemente de los demás valores, debes examinar el árbol. Esto dependerá del árbol específico generado.
 
   # c) Si existe algún atributo que no influye en la decisión, también dependerá del árbol generado y la estructura de tus datos.
