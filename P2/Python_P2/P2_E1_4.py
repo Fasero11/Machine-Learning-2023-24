@@ -43,26 +43,22 @@ if __name__ == '__main__':
                                                            'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO']], data_train_encoded['PESCAR_SI'])
 
 
-  # a) Para ver qué característica se ha seleccionado como nodo raíz y su importancia, puedes utilizar:
-  root_feature = data_train_encoded.columns[md1.tree_.feature[0]]
-  print("La característica seleccionada como nodo raíz es:" + root_feature)
+# Utiliza el modelo para hacer predicciones en los datos de entrenamiento
+X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+y_real = data_train_encoded['PESCAR_SI']
 
-  #  Demostrador del apartado a)
-  # Obtener la importancia de las características
-  importance = md1.feature_importances_
-  X = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
-  # Obtener las características utilizadas como nodos en el árbol
-  feature_names = list(X.columns)
-  # Imprimir la importancia de las características
-  for feature, imp in zip(feature_names, importance):
-    print(f'{feature}: {imp}')
-  
+# Utilizar el modelo para hacer predicciones en los nuevos datos
+y_pred = md1.predict(X_evaluacion)
 
-  # d) Para adjuntar de forma gráfica el árbol de decisión:
-  plt.figure(figsize=(15, 10))
-  plot_tree(md1, feature_names=['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
-                                                           'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
-                                                           'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
-                                                           'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO'])
-  plt.show()
+# Compara las predicciones con las etiquetas reales
+accuracy = accuracy_score(y_real, y_pred)
 
+print(accuracy)
+    #error_percentage = 100 * (1 - accuracy_score(Y, Ye))
+    #print("Error en porcentaje sobre los datos de entrenamiento:", error_percentage, "%")
+
+
+# Calcula el error en porcentaje
+error_porcentaje = 100 * (1 - accuracy)
+
+print(f'Error en porcentaje: {error_porcentaje:.2f}%')
