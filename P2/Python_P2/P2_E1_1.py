@@ -35,22 +35,23 @@ if __name__ == '__main__':
   # Transformar variables categóricas a numéricas: One hot encoding 
   data_train_encoded = pd.get_dummies(data_train, columns=['PREVISIÓN', 'TEMPERATURA', 'MAREA', 'VIENTO', 'PESCAR'])
 
-  X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
-  y_real = data_train_encoded['PESCAR_SI']
+  # nos quedamos con las entradas
+  entradas = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+  salida = data_train_encoded['PESCAR_SI']
 
   # Crear el modelo de árbol de decisión
-  md1 = DecisionTreeClassifier().fit(X_evaluacion, y_real)
+  md1 = DecisionTreeClassifier().fit(entradas, salida)
 
   # a) Para ver qué característica se ha seleccionado como nodo raíz y su importancia, puedes utilizar:
   root_feature = data_train_encoded.columns[md1.tree_.feature[0]]
   print("La característica seleccionada como nodo raíz es:" + root_feature)
 
-  #  Demostrador del apartado a)
+  # DEMOSTRACIÓN DEL APARTADO A)
   # Obtener la importancia de las características
   importance = md1.feature_importances_
-  X = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+
   # Obtener las características utilizadas como nodos en el árbol
-  feature_names = list(X.columns)
+  feature_names = list(entradas.columns)
   # Imprimir la importancia de las características
   for feature, imp in zip(feature_names, importance):
     print(f'{feature}: {imp}')

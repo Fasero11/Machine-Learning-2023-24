@@ -36,29 +36,12 @@ if __name__ == '__main__':
   # Transformar variables categóricas a numéricas: One hot encoding 
   data_train_encoded = pd.get_dummies(data_train, columns=['PREVISIÓN', 'TEMPERATURA', 'MAREA', 'VIENTO', 'PESCAR'])
 
-  X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
-  y_real = data_train_encoded['PESCAR_SI']
+  entradas = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+  salida = data_train_encoded['PESCAR_SI']
 
   # Crear el modelo de árbol de decisión
-  md1 = DecisionTreeClassifier().fit(X_evaluacion, y_real)
+  md1 = DecisionTreeClassifier().fit(entradas, salida)
 
-  # Crear el modelo de árbol de decisión
-  #md1 = DecisionTreeClassifier().fit(data_train_encoded[['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
-  #                                                         'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
-  #                                                         'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
-  #                                                         'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO']], data_train_encoded['PESCAR_SI'])
-  
-  # Utiliza el modelo para hacer predicciones en los datos de entrenamiento
-  #X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
-  #y_real = data_train_encoded['PESCAR_SI']
-  
-  # Utilizar el modelo para hacer predicciones en los nuevos datos
-  y_pred = md1.predict(X_evaluacion)
-
-  # Compara las predicciones con las etiquetas reales
-  accuracy = accuracy_score(y_real, y_pred)
-
-  # Calcula el error en porcentaje
-  error_porcentaje = 100 * (1 - accuracy)
-
-  print(f'Error en porcentaje: {error_porcentaje:.2f}%')
+  # Calcular el error
+  error_entrenamiento = 1 - md1.score(entradas, salida)
+  print(f'Error en porcentaje: {error_entrenamiento*100:.2f}%')
