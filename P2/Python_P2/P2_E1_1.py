@@ -44,9 +44,9 @@ if __name__ == '__main__':
 
   # a) Para ver qué característica se ha seleccionado como nodo raíz y su importancia, puedes utilizar:
   root_feature = data_train_encoded.columns[md1.tree_.feature[0]]
-  print(f"La característica seleccionada como nodo raíz es:" + root_feature)
+  print("La característica seleccionada como nodo raíz es:" + root_feature)
 
-  #  demostrador del apartado a)
+  #  Demostrador del apartado a)
   # Obtener la importancia de las características
   importance = md1.feature_importances_
   X = data_train_encoded.drop(columns=['PESCAR_SI'])
@@ -56,12 +56,12 @@ if __name__ == '__main__':
   for feature, imp in zip(feature_names, importance):
     print(f'{feature}: {imp}')
   
-  # b) Para verificar si existe algún valor de alguna característica que permita pescar independientemente de los demás valores, debes examinar el árbol. Esto dependerá del árbol específico generado.
-
-  # c) Si existe algún atributo que no influye en la decisión, también dependerá del árbol generado y la estructura de tus datos.
 
   # d) Para adjuntar de forma gráfica el árbol de decisión:
-  #plt.figure(figsize=(15, 10))
-  #plot_tree(model, feature_names=X.columns, class_names=['No', 'Sí'], filled=True, rounded=True)
-  #plt.show()
+  plt.figure(figsize=(15, 10))
+  plot_tree(md1, feature_names=['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
+                                                           'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
+                                                           'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
+                                                           'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO'])
+  plt.show()
 
