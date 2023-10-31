@@ -1,5 +1,4 @@
 # Aprendizaje Automático 2023 - 2024
-
 # Práctica 2 - Ejercicio 1
 
 # Julia López Augusto
@@ -36,12 +35,11 @@ if __name__ == '__main__':
   # Transformar variables categóricas a numéricas: One hot encoding 
   data_train_encoded = pd.get_dummies(data_train, columns=['PREVISIÓN', 'TEMPERATURA', 'MAREA', 'VIENTO', 'PESCAR'])
 
-  # Crear el modelo de árbol de decisión
-  md1 = DecisionTreeClassifier().fit(data_train_encoded[['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
-                                                           'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
-                                                           'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
-                                                           'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO']], data_train_encoded['PESCAR_SI'])
+  X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+  y_real = data_train_encoded['PESCAR_SI']
 
+  # Crear el modelo de árbol de decisión
+  md1 = DecisionTreeClassifier().fit(X_evaluacion, y_real)
 
   # a) Para ver qué característica se ha seleccionado como nodo raíz y su importancia, puedes utilizar:
   root_feature = data_train_encoded.columns[md1.tree_.feature[0]]
@@ -60,7 +58,7 @@ if __name__ == '__main__':
 
   # d) Para adjuntar de forma gráfica el árbol de decisión:
   plt.figure(figsize=(15, 10))
-  plot_tree(md1, feature_names=['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
+  plot_tree(md1, filled=True, feature_names=['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
                                                            'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
                                                            'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
                                                            'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO'])

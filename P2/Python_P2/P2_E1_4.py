@@ -36,29 +36,29 @@ if __name__ == '__main__':
   # Transformar variables categóricas a numéricas: One hot encoding 
   data_train_encoded = pd.get_dummies(data_train, columns=['PREVISIÓN', 'TEMPERATURA', 'MAREA', 'VIENTO', 'PESCAR'])
 
+  X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+  y_real = data_train_encoded['PESCAR_SI']
+
   # Crear el modelo de árbol de decisión
-  md1 = DecisionTreeClassifier().fit(data_train_encoded[['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
-                                                           'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
-                                                           'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
-                                                           'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO']], data_train_encoded['PESCAR_SI'])
+  md1 = DecisionTreeClassifier().fit(X_evaluacion, y_real)
 
+  # Crear el modelo de árbol de decisión
+  #md1 = DecisionTreeClassifier().fit(data_train_encoded[['PREVISIÓN_LLUVIOSO', 'PREVISIÓN_NUBLADO', 'PREVISIÓN_SOLEADO',
+  #                                                         'TEMPERATURA_ALTA', 'TEMPERATURA_BAJA', 'TEMPERATURA_MEDIA',
+  #                                                         'MAREA_ALTA', 'MAREA_BAJA', 'MAREA_MEDIA',
+  #                                                         'VIENTO_DEBIL', 'VIENTO_FUERTE', 'VIENTO_MEDIO']], data_train_encoded['PESCAR_SI'])
+  
+  # Utiliza el modelo para hacer predicciones en los datos de entrenamiento
+  #X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
+  #y_real = data_train_encoded['PESCAR_SI']
+  
+  # Utilizar el modelo para hacer predicciones en los nuevos datos
+  y_pred = md1.predict(X_evaluacion)
 
-# Utiliza el modelo para hacer predicciones en los datos de entrenamiento
-X_evaluacion = data_train_encoded.drop(columns=['PESCAR_SI', 'PESCAR_NO'])
-y_real = data_train_encoded['PESCAR_SI']
+  # Compara las predicciones con las etiquetas reales
+  accuracy = accuracy_score(y_real, y_pred)
 
-# Utilizar el modelo para hacer predicciones en los nuevos datos
-y_pred = md1.predict(X_evaluacion)
+  # Calcula el error en porcentaje
+  error_porcentaje = 100 * (1 - accuracy)
 
-# Compara las predicciones con las etiquetas reales
-accuracy = accuracy_score(y_real, y_pred)
-
-print(accuracy)
-    #error_percentage = 100 * (1 - accuracy_score(Y, Ye))
-    #print("Error en porcentaje sobre los datos de entrenamiento:", error_percentage, "%")
-
-
-# Calcula el error en porcentaje
-error_porcentaje = 100 * (1 - accuracy)
-
-print(f'Error en porcentaje: {error_porcentaje:.2f}%')
+  print(f'Error en porcentaje: {error_porcentaje:.2f}%')
