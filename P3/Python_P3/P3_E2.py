@@ -40,17 +40,17 @@ if __name__ == '__main__':
     info_threshold = 0.9
 
     retained_info = 1
-    # Vamos quitando características hasta que el porcentaje de información retenida sea menor al 90%
+    # Vamos quitando características hasta que el porcentaje de información retenida sea menor al umbral (info_threshold)
     while retained_info > info_threshold:
-      pca = PCA(n_components=keep_components)
+      pca = PCA(n_components=keep_components) # Indicamos el número de componentes que queremos quedarnos
       X_reduced = pca.fit_transform(X)
 
       # Calculamos el porcentaje de información que aporta cada componente
       variance_explained = pca.explained_variance_ratio_
 
-      # Calculamos el porcentaje de información retenida en total
+      # Calculamos el porcentaje de información retenida en total (suma de los porcentajes de cada componente)
       cumulative_variance_explained = variance_explained.cumsum()
-      retained_info = cumulative_variance_explained[-1]
+      retained_info = cumulative_variance_explained[-1] # El último elemento del vecotr que devuelve cumsum() es la suma de todos los anteriores
 
       print("Componentes eliminados: " + str(X.shape[1] - keep_components) + " | Información retenida: "+ str(retained_info))
 
