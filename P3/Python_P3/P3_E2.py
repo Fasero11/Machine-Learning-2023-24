@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
       # Calculamos el porcentaje de información retenida en total (suma de los porcentajes de cada componente)
       cumulative_variance_explained = variance_explained.cumsum()
-      retained_info = cumulative_variance_explained[-1] # El último elemento del vecotr que devuelve cumsum() es la suma de todos los anteriores
+      retained_info = cumulative_variance_explained[-1] # El último elemento del vector que devuelve cumsum() es la suma de todos los anteriores
 
       print("Componentes eliminados: " + str(X.shape[1] - keep_components) + " | Información retenida: "+ str(retained_info))
 
