@@ -116,5 +116,5 @@ if __name__ == '__main__':
     avg_dist_3 = np.mean(distances_3)
 
     print("Class 1 (red) average distance from centroid 1: " + str(avg_dist_1))
-    print("Class 2 (blue) average distance from centroid 1: " + str(avg_dist_2))
-    print("Class 3 (green) average distance from centroid 1: " + str(avg_dist_3))
+    print("Class 2 (blue) average distance from centroid 2: " + str(avg_dist_2))
+    print("Class 3 (green) average distance from centroid 3: " + str(avg_dist_3))
