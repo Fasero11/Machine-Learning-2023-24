@@ -37,6 +37,7 @@ if __name__ == '__main__':
     
     keep_components = X.shape[1]
     info_threshold = 0.9
+    print("Umbral de información: " + str(info_threshold))
 
     retained_info = 1
     # Vamos quitando características hasta que el porcentaje de información retenida sea menor al umbral (info_threshold)
