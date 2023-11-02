@@ -34,7 +34,6 @@ if __name__ == '__main__':
     # Normalizamos el set de datos para mejorar el funcionamiento de PCA
     scaler = StandardScaler()
     X_normalized = scaler.fit_transform(X)
-
     
     keep_components = X.shape[1]
     info_threshold = 0.9
