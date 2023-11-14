@@ -1,18 +1,20 @@
 # Aprendizaje Automático 2023 - 2024
-# Práctica 3 - Ejercicio 3 - Parte 2 
+# Práctica 3 - Ejercicio 3 - Parte 2
 
 # Julia López Augusto
 # Gonzalo Vega Pérez
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
+from sklearn.metrics import zero_one_loss
 import os
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
 from sklearn import svm
-from mpl_toolkits.mplot3d import Axes3D
 
-
-# Función para graficar el conjunto de datos con contornos y el hiperplano de separación
-def plot_hiperplano(X, Y, model, plot_title):
+# Función para graficar el conjunto de datos
+def plot_dataset(X, Y, plot_title):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
@@ -20,63 +22,15 @@ def plot_hiperplano(X, Y, model, plot_title):
     scatter_class_minus = ax.scatter(X[Y == -1, 0], X[Y == -1, 1], X[Y == -1, 2], c='b', marker='o', label='Clase -1')
     scatter_class_plus = ax.scatter(X[Y == 1, 0], X[Y == 1, 1], X[Y == 1, 2], c='r', marker='x', label='Clase 1')
     
-    # Representar hiperplano de separación óptimo
-    coef = model.coef_[0]
-    intercept = model.intercept_
-    xx, yy = np.meshgrid(X[:, 0], X[:, 1])
-    zz = (-coef[0] * xx - coef[1] * yy - intercept) / coef[2]
-    
-    surface = ax.plot_surface(xx, yy, zz, color='c', alpha=0.3)
-    
-    # Gestionar manualmente la leyenda
     # Gestionar manualmente la leyenda
     handles = [scatter_class_minus, scatter_class_plus]
     labels = ['Clase -1', 'Clase 1']
-
-    # Crear un proxy artista para el hiperplano de separación (superficie)
-    proxy = plt.Rectangle((0, 0), 1, 1, fc='c', alpha=0.3)
-    handles.append(proxy)
+    
     labels.append('Hiperplano de separación')
 
     ax.legend(handles, labels)
 
     
-    ax.set_xlabel('X1')
-    ax.set_ylabel('X2')
-    ax.set_zlabel('X3')
-    ax.set_title(plot_title)
-    
-    plt.show()
-
-
-
-# Función para graficar el conjunto de datos
-def plot_dataset(X, Y, plot_title):
-    # Matriz que contiene los colores de cada muestra
-    colors = np.zeros((len(Y), 3))
-    
-    # Si para la muestra n, Y(n) es -1, colors(n) será [0, 0, 1]. Color azul
-    # Si para la muestra n, Y(n) es 1, colors(n) será [1, 0, 0]. Color rojo
-    colors_class1 = np.tile([0, 0, 1], (np.sum(Y == -1), 1))
-    colors_class2 = np.tile([1, 0, 0], (np.sum(Y == 1), 1))
-    
-    # Cambiar el valor de color original [0,0,0] al valor calculado. Rojo o Azul.
-    colors[Y == -1, :] = colors_class1
-    colors[Y == 1, :] = colors_class2
-
-    # Graficar el conjunto de datos con los contornos
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    # Usar plot en lugar de scatter para representar solo contornos
-    ax.plot(X[Y == -1, 0], X[Y == -1, 1], X[Y == -1, 2], 'bo', label='Clase -1', markerfacecolor='none')
-    ax.plot(X[Y == 1, 0], X[Y == 1, 1], X[Y == 1, 2], 'ro', label='Clase 1', markerfacecolor='none')
-    
-    
-    # Graficar el conjunto de datos con los nuevos colores.
-    #fig = plt.figure()
-    #ax = fig.add_subplot(111, projection='3d')
-    #ax.scatter(X[:, 0], X[:, 1], X[:, 2], c=colors)
     ax.set_xlabel('X1')
     ax.set_ylabel('X2')
     ax.set_zlabel('X3')
@@ -98,17 +52,42 @@ if __name__ == '__main__':
     # 2 posibles casos de salida: -1 y 1
     Y = train_data['Y'] 
 
-    ## Ejercicio 3.1
-    plot_dataset(X, Y, "Conjunto de entrenamiento")
-    # Tiene forma de hiperboloide invertida
 
-    ## Ejercicio 3.2
-    # Modelo SVM con kernel lineal
-    model = svm.SVC(kernel='linear')
-    model.fit(X, Y)
+    # Plot the original dataset
+    plot_dataset(X, Y, "trainingsetSVM2")
 
-    # Graficar modelo SVM con contornos y hiperplano de separación
-    plot_hiperplano(X, Y, model, "Modelo SVM lineal + hiperplano")
+    # Model with a linear kernel
+    linear_mdl = svm.SVC(kernel='linear')
+    linear_mdl.fit(X, Y)
+    ye_linear = linear_mdl.predict(X)
 
+    # Plot predictions for the linear kernel
+    plot_dataset(X, ye_linear, "Predictions trainingsetSVM1 (linear)")
 
+    # Print error rate for the linear kernel
+    error_rate_linear = zero_one_loss(Y, ye_linear)
+    num_errors_linear = error_rate_linear * len(Y)
+    print(f'Number of errors (linear): {num_errors_linear}. Error rate: {error_rate_linear:.3f}.\n\n')
+    # el error es del 17,80% y no ea 0 porque no es linealmente separable 
+
+    # 3.5 
+    n = 1
+    max_iterations = 10
+    error_rate_poly = 1
+
+    while error_rate_poly > 0 and n <= max_iterations:
+        # Model with a polynomial kernel of degree n
+        poly_mdl = svm.SVC(kernel='poly', degree=n, gamma=2)
+        poly_mdl.fit(X, Y)
+        ye_poly = poly_mdl.predict(X)
+
+        # Calculate error rate and number of errors
+        # calcula la tasa de error y el número de errores 
+        error_rate_poly = zero_one_loss(Y, ye_poly)
+        num_errors_poly = error_rate_poly * len(Y)
+    
+        
+        print(f'Degree of the polynomial: {n}. Number of errors (polynomial): {num_errors_poly:.0f}. Error rate: {error_rate_poly:.4f}.')
+    
+        n += 1
 
