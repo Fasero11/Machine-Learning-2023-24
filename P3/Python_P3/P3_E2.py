@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     retained_info = 1
     # Vamos quitando características hasta que el porcentaje de información retenida sea menor al umbral (info_threshold)
-    while retained_info > info_threshold:
+    while retained_info > info_threshold and keep_components > 0:
       pca = PCA(n_components=keep_components) # Indicamos el número de componentes que queremos quedarnos
       X_reduced = pca.fit_transform(X_normalized)
 
