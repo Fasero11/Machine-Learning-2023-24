@@ -10,21 +10,23 @@ import matplotlib.pyplot as plt
 from sklearn import svm
 from mpl_toolkits.mplot3d import Axes3D
 
-# Función para graficar el conjunto de datos con contornos y el hiperplano de separación
+# Función para graficar el conjunto de datos y el hiperplano de separación
 def plot_hiperplano(X, Y, model, plot_title):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    # Representar contornos como en el ejemplo anterior
+    # Representar datos 
     scatter_class_minus = ax.scatter(X[Y == -1, 0], X[Y == -1, 1], X[Y == -1, 2], c='b', marker='o', label='Clase -1')
     scatter_class_plus = ax.scatter(X[Y == 1, 0], X[Y == 1, 1], X[Y == 1, 2], c='r', marker='x', label='Clase 1')
-    
-    # Representar hiperplano de separación óptimo
+
+    # Obtener los coeficientes y la intersección del hiperplano
     coef = model.coef_[0]
     intercept = model.intercept_
+    # Crear una malla de puntos para el plano XY
     xx, yy = np.meshgrid(X[:, 0], X[:, 1])
+    # Calcular los valores en el eje Z para el hiperplano 
     zz = (-coef[0] * xx - coef[1] * yy - intercept) / coef[2]
-    
+    # Representar el hiperplano como una superficie
     surface = ax.plot_surface(xx, yy, zz, color='c', alpha=0.3)
     
     # Gestionar manualmente la leyenda
@@ -34,11 +36,8 @@ def plot_hiperplano(X, Y, model, plot_title):
     # Crear un proxy artista para el hiperplano de separación (superficie)
     proxy = plt.Rectangle((0, 0), 1, 1, fc='c', alpha=0.3)
     handles.append(proxy)
-    labels.append('Hiperplano de separación')
-
     ax.legend(handles, labels)
 
-    
     ax.set_xlabel('X1')
     ax.set_ylabel('X2')
     ax.set_zlabel('X3')
@@ -47,24 +46,19 @@ def plot_hiperplano(X, Y, model, plot_title):
     plt.show()
 
 # Función para graficar el conjunto de datos
-
 def plot_dataset(X, Y, plot_title):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    # Representar contornos como en el ejemplo anterior
+    # Representa los datos 
     scatter_class_minus = ax.scatter(X[Y == -1, 0], X[Y == -1, 1], X[Y == -1, 2], c='b', marker='o', label='Clase -1')
     scatter_class_plus = ax.scatter(X[Y == 1, 0], X[Y == 1, 1], X[Y == 1, 2], c='r', marker='x', label='Clase 1')
     
     # Gestionar manualmente la leyenda
     handles = [scatter_class_minus, scatter_class_plus]
     labels = ['Clase -1', 'Clase 1']
-    
-    labels.append('Hiperplano de separación')
-
     ax.legend(handles, labels)
 
-    
     ax.set_xlabel('X1')
     ax.set_ylabel('X2')
     ax.set_zlabel('X3')
@@ -88,12 +82,10 @@ if __name__ == '__main__':
 
     ## Ejercicio 3.1
     plot_dataset(X, Y, "Conjunto de entrenamiento")
-    # Tiene forma de hiperboloide invertida
 
     ## Ejercicio 3.2
     # Modelo SVM con kernel lineal
     model = svm.SVC(kernel='linear')
     model.fit(X, Y)
 
-    # Graficar modelo SVM con contornos y hiperplano de separación
     plot_hiperplano(X, Y, model, "Modelo SVM lineal + hiperplano")
