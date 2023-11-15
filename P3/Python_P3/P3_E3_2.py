@@ -18,19 +18,15 @@ def plot_dataset(X, Y, plot_title):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    # Representar contornos como en el ejemplo anterior
+    # Representar datos
     scatter_class_minus = ax.scatter(X[Y == -1, 0], X[Y == -1, 1], X[Y == -1, 2], c='b', marker='o', label='Clase -1')
     scatter_class_plus = ax.scatter(X[Y == 1, 0], X[Y == 1, 1], X[Y == 1, 2], c='r', marker='x', label='Clase 1')
     
     # Gestionar manualmente la leyenda
     handles = [scatter_class_minus, scatter_class_plus]
     labels = ['Clase -1', 'Clase 1']
-    
-    labels.append('Hiperplano de separación')
-
     ax.legend(handles, labels)
 
-    
     ax.set_xlabel('X1')
     ax.set_ylabel('X2')
     ax.set_zlabel('X3')
@@ -52,27 +48,26 @@ if __name__ == '__main__':
     # 2 posibles casos de salida: -1 y 1
     Y = train_data['Y'] 
 
+    # Ejercicio 3.3
+    plot_dataset(X, Y, "Conjunto de entrenamiento 2")
 
-    # Plot the original dataset
-    plot_dataset(X, Y, "trainingsetSVM2")
-
-    # Model with a linear kernel
+    # Modelo con kernel lineal y entrenado 
     linear_mdl = svm.SVC(kernel='linear')
     linear_mdl.fit(X, Y)
+    # Salidas predecidas del modelo lineal
     ye_linear = linear_mdl.predict(X)
 
-    # Plot predictions for the linear kernel
-    plot_dataset(X, ye_linear, "Predictions trainingsetSVM1 (linear)")
+    plot_dataset(X, ye_linear, " Predicciones del conjunto 2 lineal")
 
-    # Print error rate for the linear kernel
+    # Calcular la tasa de error
     error_rate_linear = zero_one_loss(Y, ye_linear)
+    # Calcula el número total de errores 
     num_errors_linear = error_rate_linear * len(Y)
     print(f'Number of errors (linear): {num_errors_linear}. Error rate: {error_rate_linear:.3f}.\n\n')
-    # el error es del 17,80% y no ea 0 porque no es linealmente separable 
 
-    # 3.5 
+    # Ejercicio 3.5
     n = 1
-    max_iterations = 10
+    max_iterations = 15
     error_rate_poly = 1
 
     while error_rate_poly > 0 and n <= max_iterations:
@@ -81,12 +76,11 @@ if __name__ == '__main__':
         poly_mdl.fit(X, Y)
         ye_poly = poly_mdl.predict(X)
 
-        # Calculate error rate and number of errors
-        # calcula la tasa de error y el número de errores 
+        # Calcular la tasa de error
         error_rate_poly = zero_one_loss(Y, ye_poly)
+        # Calcula el número total de errores 
         num_errors_poly = error_rate_poly * len(Y)
-    
-        
+
         print(f'Degree of the polynomial: {n}. Number of errors (polynomial): {num_errors_poly:.0f}. Error rate: {error_rate_poly:.4f}.')
     
         n += 1
