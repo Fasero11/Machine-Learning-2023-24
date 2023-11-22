@@ -56,7 +56,7 @@ class Net(torch.nn.Module):
 
 # 1. Preparar datos
 
-dataframe = pd.read_csv("/content/drive/MyDrive/iris.csv")
+dataframe = pd.read_csv("/P4/Data_P4/iris.csv")
 print(dataframe.shape)
 dataframe.head()
 
