@@ -64,7 +64,7 @@ test_dataset = MyDatasett(X_test, y_test)
 #hacemos varios
 #shuffle es para la aleatoriedad e inicialmente lo ponemos a false para que la depuración sea fácil
 #cuando ya esté depurado ponemos shuffle a True
-batch_size = 5
+batch_size = 10
 train_dataloader = DataLoader(train_dataset, batch_size= batch_size, shuffle=False)
 train_dataloader2 = DataLoader(train_dataset, batch_size=len(train_dataset), shuffle=False)
 test_dataloader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=False)
